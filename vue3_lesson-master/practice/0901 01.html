@@ -16,6 +16,21 @@
             font-size: 24px;
             display: inline-block;
         }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: blanchedalmond;
+        }
+
+        .card-text {
+            color: green;
+        }
+
+        .text-crossed {
+            color: lightgray;
+            text-decoration: line-through;
+        }
     </style>
 </head>
 
@@ -25,17 +40,20 @@
         <h1>{{message}}</h1>
         <p>{{num * 0.9}}</p>
         <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+            <img src="https://wineonline.blob.core.windows.net/www/PDT/2022090515474812416026.png" class="card-img-top"
+                :alt="cardImgAlt">
             <div class="card-body">
                 <h5 class="card-title">品項：{{productName}}</h5>
-                <p class="card-text">商品名稱：{{product.type}}</p>
+                <p class="card-text" v-bind:class="{'highlight': isHighLight}">商品名稱：{{product.type}}</p>
                 <p class="card-text">價格：{{product.price}}</p>
                 <p class="card-text">賞味期限：{{product.bestIn}}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary" v-bind:style="btnStyle">Go somewhere</a>
             </div>
         </div>
         <div v-if="!isLogin">登入</div>
-        <div v-else>歡迎光臨，{{user.name}}</div>
+        <div v-else v-bind:style="{color: textColor, fontSize: fontSize, backgroundColor: bgColor}"
+            @click="changeColor()">歡迎光臨，{{user.name}}
+        </div>
 
         <ul>
             <li v-for="item in fruits">{{item}}</li>
@@ -45,6 +63,25 @@
         </ul>
 
         <div v-show="isDisplay" v-bind:class="{'highlight': isHighLight}">v-bind, v-show</div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkDefault" v-model="isChecked">
+            <label class="form-check-label" for="checkDefault">
+                Tick me, I'll greet you.
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" v-model="isCrossed">
+            <label class="form-check-label" for="checkChecked" :class="{'text-crossed': isCrossed}">
+                Tick me, I cross things off.
+            </label>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" v-model="myName">
+        </div>
+        <p v-if="isChecked" :class="{'text-crossed': isCrossed}">Hello, {{myName}}! Nice to have you back.</p>
     </div>
 
     <!-- <h2>[id = "app"]外</h2>
@@ -80,15 +117,40 @@
                     age: 34,
                     jobTitle: "King"
                 });
-                let isLogin = ref(false);
+                let isLogin = ref(true);
 
                 const fruits = ref(["Banana", "Guava", "Waxapple", "Lychee"])
 
                 let isDisplay = ref(false);
-                let isHighLight = ref(false);
+                let isHighLight = ref(true);
+
+                const btnStyle = reactive({
+                    "background-color": "red",
+                    "padding": "24px",
+                    "border": "none",
+                    "font-size": "24px",
+                })
+
+                const fontSize = ref("24px");
+                const textColor = ref("darkblue");
+                const bgColor = ref("pink");
+
+                function changeColor() {
+                    textColor.value = "white",
+                        bgColor.value = "gold",
+                        fontSize.value = "32px",
+                        bgColor.value = "blueviolet",
+                        isLogin.value = "false"
+                }
+
+                const cardImgAlt = ref("this is cheesecake no cap");
+
+                const isChecked = ref(false);
+                const isCrossed = ref(false)
+                const myName = ref("Sean");
 
                 return {
-                    message, num, productName, product, isLogin, user, fruits, isDisplay, isHighLight
+                    message, num, productName, product, isLogin, user, fruits, isDisplay, isHighLight, btnStyle, fontSize, textColor, bgColor, changeColor, isChecked, myName, cardImgAlt, isCrossed
                 }
             }
         }).mount('#app')
