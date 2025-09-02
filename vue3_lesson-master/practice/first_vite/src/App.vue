@@ -1,17 +1,32 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue';
+
+import {ref} from "vue";
+import imgUrl1 from "./assets/screenshot/IMG_6087.PNG";
+const onePunch = ref(imgUrl1);
+
+import Box1 from "./components/Box.vue"
+
+import Lifecircle from "./components/Lifecircle.vue"
+
+import Computed from './components/Computed.vue';
 </script>
 
 <template>
-  <div>
+  <Computed/>
+    <Box1/>
+  <Lifecircle/>
+  <!-- <div>
     <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
+    <img src="./assets/screenshot/IMG_6086.PNG" alt="">
+    <img :src="onePunch" alt="">
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Vite + Vue" /> -->
 </template>
 
 <style scoped>
