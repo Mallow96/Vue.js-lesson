@@ -22,31 +22,26 @@
           v-model="weightInp"
         />
       </div>
-      <button type="button" class="btn btn-primary" @click="bmiCalc()">Submit</button>
+      <button type="button" class="btn btn-primary" @click="bmiCalc">Submit</button>
     </form>
 
     <div class="result alert alert-primary my-3">BMI計算結果：{{ bmiResult }}</div>
-    <div>{{ heightInp }}</div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const heightInp = ref(0);
 const weightInp = ref(0);
-const height = heightInp.value / 100;
-const weight = weightInp.value;
-let bmiResult;
+let bmiResult = ref(0);
 
-const bmiCalc = () => {
-  bmiResult = weight / (height * height);
-  console.log(height);
-  console.log(weight);
-  console.log(bmiResult);
+const bmiCalc = computed(() => {
+  const height = heightInp.value / 100;
+  const weight = weightInp.value;
 
-  return bmiResult;
-};
+  bmiResult.value = (weight / (height * height)).toFixed(2);
+});
 </script>
 
 <style scoped></style>
