@@ -4,7 +4,7 @@ import { ref, watch } from "vue";
 let nameInput = ref("");
 let nameDisplay = ref("");
 
-let nameIsInput = ref(true);
+let nameIsInput = ref(false);
 let msgColor = ref("gray");
 
 const clear = () => {
@@ -14,21 +14,10 @@ const clear = () => {
 
 watch(nameInput, (inputChange) => {
   const newInputLength = inputChange.length;
+  nameDisplay.value = inputChange;
+
   if (newInputLength == 0) {
-    nameIsInput.value = true;
-    msgColor.value = "gray";
-  } else if (inputChange <= 0 || inputChange > 24) {
-    nameIsInput.value = true;
-    msgColor.value = "red";
-  } else if (inputChange < 8) {
-    nameDisplay.value = nameInput.value;
-    nameIsInput.value = false;
-    nameDisplay.value = "早起的鬧鐘已設定！";
-    msgColor.value = "gray";
-  } else if (inputChange <= 24) {
-    nameDisplay.value = nameInput.value;
-    nameIsInput.value = false;
-    nameDisplay.value = "晚起的鬧鐘已設定！請確保有足夠睡眠。";
+    nameIsInput = ref(true);
     msgColor.value = "gray";
   }
 });
@@ -36,15 +25,16 @@ watch(nameInput, (inputChange) => {
 
 <template>
   <div class="container border rounded my-3 p-3">
-    <h2>Wake-up Alert</h2>
+    <h2>To Do List</h2>
 
     <div>
-      <label for="name">起床時間：</label
+      <label for="name">今日行程：</label
       ><input type="number" class="bg-white text-black mt-3" v-model="nameInput" />
-      <button class="btn btn-danger mx-3" @click="clear()">清除</button>
+      <button type="button" class="btn btn-success mx-3">送出</button>
+      <button type="button" class="btn btn-danger" @click="clear()">清除</button>
     </div>
     <p class="my-3" :class="{ display: !nameIsInput }" :style="{ color: msgColor }">
-      告訴我你的起床時間！
+      告訴我你的行程！
     </p>
     <p class="my-3" :class="{ display: nameIsInput }" :style="{ color: msgColor }">
       {{ nameDisplay }}

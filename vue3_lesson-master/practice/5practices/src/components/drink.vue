@@ -14,7 +14,7 @@ const clear = () => {
 watch(nameInput, (inputChange) => {
   const newInputLength = inputChange.length;
   if (newInputLength == 0) {
-    nameIsInput = ref(true);
+    nameIsInput.value = true;
   } else {
     nameDisplay.value = nameInput.value;
     nameIsInput.value = false;
