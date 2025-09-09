@@ -1,5 +1,45 @@
-<script setup></script>
+<script setup>
+// import Axios from "./components/Axios.vue";
+import NavBar from "./components/ToolBar.vue";
+import SideBar from "./components/SideBar.vue";
+</script>
 
-<template></template>
+<template>
+  <!-- <Axios /> -->
+  <header>
+    <NavBar />
+  </header>
 
-<style scoped></style>
+  <div class="container">
+    <div class="row">
+      <aside class="col-3"><SideBar /></aside>
+      <main class="col-9">test123</main>
+    </div>
+  </div>
+
+  <footer>
+    <p>CopyRight &copy; Mallow Liu</p>
+  </footer>
+</template>
+
+<style scoped>
+footer {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+}
+
+footer p {
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  margin: 0;
+}
+
+main {
+  background-color: violet;
+}
+</style>

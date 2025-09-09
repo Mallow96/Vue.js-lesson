@@ -6,23 +6,24 @@ import { defineStore } from 'pinia';
 import { ref, computed, reactive } from "vue";
 
 //setup 語法
-export const useFruitStore = defineStore('fruits', () => {
+export const useNotesStore = defineStore('notes', () => {
     // ref() 就是 state 属性
 
-    const fruits = reactive([
-        { name: "水蜜桃", price: 80 },
-        { name: "西瓜", price: 50 },
-        { name: "水梨", price: 40 }
-    ])
-
-    let totalPrice = ref(0);
+    const notes = [
+        {
+            id: 1,
+            text: '完成作業',
+            content: "完成歷史作業第11章",
+            isFinished: false
+        }
+    ]
 
     // computed() 就是 getters
 
     // function() 就是 actions
 
 
-    return { totalPrice, addToCart, fruits };
+    return { notes };
 })
 
 // option語法
