@@ -13,7 +13,9 @@ import SideBar from "./components/SideBar.vue";
   <div class="container">
     <div class="row">
       <aside class="col-3"><SideBar /></aside>
-      <main class="col-9">test123</main>
+      <main class="col-9">
+        <router-view></router-view>
+      </main>
     </div>
   </div>
 
@@ -37,9 +39,5 @@ footer p {
   line-height: 50px;
   text-align: center;
   margin: 0;
-}
-
-main {
-  background-color: violet;
 }
 </style>

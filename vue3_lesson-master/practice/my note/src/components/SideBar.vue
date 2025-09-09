@@ -1,33 +1,125 @@
-<script setup></script>
+<script setup>
+import { useNoteStore } from "../stores/note_store";
+const noteStore = useNoteStore();
+</script>
 
 <template>
-  <div class="container">
-    <button type="button" class="btn btn-info w-100 my-3">Add</button>
+  <div class="sidebar">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 my-3 text-center">
+          <router-link :to="{ path: '/add' }">
+            <button type="button" class="add-button btn btn-info w-75">Add</button>
+          </router-link>
+        </div>
+        <div class="pinned col-12 my-3">
+          <h5>Pinned</h5>
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              v-for="note in noteStore.pinnedNotes"
+            >
+              <span class="item-left">
+                <i
+                  class="icon fa-solid fa-thumbtack me-3 rotate"
+                  @click="noteStore.markPinned(note.id)"
+                ></i>
+                <span>{{ note.title }}</span>
+              </span>
+              <span class="item-right">
+                <router-link :to="{ path: '/edit/:id' }">
+                  <i class="icon fa-solid fa-pen-to-square"></i>
+                </router-link>
 
-    <div class="row">
-      <div class="pinned col-12 my-3">
-        <h5>Pinned</h5>
-        <ul class="list-group">
-          <li class="list-group-item">An item</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
-          <li class="list-group-item">A fourth item</li>
-          <li class="list-group-item">And a fifth one</li>
-        </ul>
+                <i
+                  class="icon fa-solid fa-trash ms-2"
+                  @click="noteStore.deleteItem(note.id)"
+                ></i>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="regular col-12 my-3">
+          <h5>Items</h5>
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              v-for="note in noteStore.allNotes"
+            >
+              <span class="item-left">
+                <i
+                  class="icon fa-solid fa-thumbtack me-3"
+                  @click="noteStore.markPinned(note.id)"
+                ></i>
+                <span>{{ note.title }}</span>
+              </span>
+              <span class="item-right">
+                <router-link :to="{ path: '/edit/:id' }">
+                  <i class="icon fa-solid fa-pen-to-square"></i>
+                </router-link>
+
+                <i
+                  class="icon fa-solid fa-trash ms-2"
+                  @click="noteStore.deleteItem(note.id)"
+                ></i>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="regular col-12 my-3">
-        <h5>Items</h5>
-        <ul class="list-group">
-          <li class="list-group-item">An item</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
-          <li class="list-group-item">A fourth item</li>
-          <li class="list-group-item">And a fifth one</li>
-        </ul>
+  <div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">刪除資料</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>確定刪除資料？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            關閉
+          </button>
+          <button type="button" class="btn btn-primary">確認</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.add-button {
+  color: white;
+  &:hover {
+    color: darkslategray;
+  }
+}
+
+.sidebar {
+  width: 100%;
+  background: #f0f0f0;
+  height: 90vh;
+}
+.modal {
+  transition: opacity 0.3s ease;
+}
+.rotate {
+  color: red;
+  transform: rotate(45deg);
+}
+
+.icon:hover {
+  color: gray;
+  cursor: pointer;
+}
+</style>
