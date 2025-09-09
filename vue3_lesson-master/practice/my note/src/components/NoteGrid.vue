@@ -12,7 +12,7 @@ const noteStore = useNoteStore();
         <div class="card">
           <div class="card-header">
             <i
-              class="fa-solid fa-thumbtack me-3 rotate"
+              class="icon fa-solid fa-thumbtack me-3 rotate"
               @click="noteStore.markPinned(note.id)"
             ></i>
           </div>
@@ -34,7 +34,7 @@ const noteStore = useNoteStore();
         <div class="card">
           <div class="card-header">
             <i
-              class="fa-solid fa-thumbtack me-3"
+              class="icon fa-solid fa-thumbtack me-3"
               @click="noteStore.markPinned(note.id)"
             ></i>
           </div>
@@ -77,5 +77,10 @@ const noteStore = useNoteStore();
   left: 10px;
   color: red;
   transform: rotate(45deg);
+}
+
+.icon:hover {
+  color: gray;
+  cursor: pointer;
 }
 </style>
