@@ -49,6 +49,10 @@ export const useNoteStore = defineStore('notes', () => {
         },
     ])
 
+    // const isLoaded = ref(false);
+    // const selectedNoteId = ref(null);
+    // const keyword = ref(null);
+
     // computed() 就是 getters
 
     const pinnedNotes = computed(() => {
@@ -66,13 +70,18 @@ export const useNoteStore = defineStore('notes', () => {
         note.pinned = !note.pinned;
     }
 
+    const findItemTitle = (id) => {
+        const note = notes.find(note => note.id === id);
+        return note.title;
+    }
+
     const deleteItem = (id) => {
         const index = notes.findIndex(note => note.id === id);
         notes.splice(index, 1);
     }
 
     const addItem = (newTitle, newContent) => {
-        if (newTitle == null) return false
+        if (newTitle == null || newContent == null) return false
         else {
             const latestId = notes.length + 1;
             notes.push({
@@ -96,7 +105,16 @@ export const useNoteStore = defineStore('notes', () => {
         }
     }
 
-    return { notes, allNotes, pinnedNotes, markPinned, deleteItem, addItem, editItem };
+    let searchResults = [];
+    const searchNotes = (keyword) => {
+        searchResults = notes.filter(note =>
+            note.title.toLowerCase().includes(keyword) ||
+            note.content.toLowerCase().includes(keyword)
+        );
+        console.log(searchResults);
+    }
+
+    return { notes, allNotes, pinnedNotes, searchResults, markPinned, deleteItem, addItem, editItem, findItemTitle, searchNotes };
 })
 
 // option語法

@@ -15,17 +15,8 @@ const fnClearPlaceholderTitle = () => {
   titleInput.placeholder = "";
 };
 
-const fnPlaceholderTitle = () => {
-  const titleInput = document.querySelector("#title");
-  titleInput.placeholder = "New title here";
-};
-
 const fnClearContentArea = () => {
   newContent.value = "";
-};
-
-const fnContentArea = () => {
-  newContent.value = "Add description for this note";
 };
 
 const fnCreateNote = () => {
@@ -93,7 +84,6 @@ const fnCreateNote = () => {
             id="title"
             placeholder="New title here"
             @focus="fnClearPlaceholderTitle()"
-            @blur="fnPlaceholderTitle()"
           />
         </div>
         <div class="mb-3">
@@ -103,14 +93,11 @@ const fnCreateNote = () => {
             rows="20"
             v-model="newContent"
             @focus="fnClearContentArea()"
-            @blur="fnContentArea()"
-          >
-筆記內容...</textarea
-          >
+          ></textarea>
         </div>
 
         <button type="submit" class="btn btn-outline-success">
-          儲存 <i class="fa-solid fa-floppy-disk"></i>
+          Save and Exit <i class="fa-solid fa-floppy-disk"></i>
         </button>
       </form>
     </main>

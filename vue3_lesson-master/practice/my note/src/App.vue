@@ -12,8 +12,8 @@ import SideBar from "./components/SideBar.vue";
 
   <div class="container">
     <div class="row">
-      <aside class="col-3"><SideBar /></aside>
-      <main class="col-9">
+      <aside class="col-4"><SideBar /></aside>
+      <main class="col-8">
         <router-view></router-view>
       </main>
     </div>

@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 const noteStore = useNoteStore();
 let selectedNoteId = ref(0);
 let deleteModal = null;
+const findTitle = ref("");
 
 //和sidebar用不一樣的ID，不然會呼叫那邊的modal
 onMounted(() => {
@@ -15,6 +16,7 @@ onMounted(() => {
 const showDeleteModal = (noteId) => {
   selectedNoteId.value = noteId;
   deleteModal.show();
+  findTitle.value = noteStore.findItemTitle(noteId);
 };
 
 const confirmDelete = () => {
@@ -26,51 +28,47 @@ const confirmDelete = () => {
   <main id="result" class="container mt-4">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col" v-for="note in noteStore.pinnedNotes">
-        <router-link :to="{ name: 'edit', params: { id: note.id } }">
-          <div class="card" :class="{ 'card-highlight': note.pinned }">
-            <div class="card-header">
-              <i
-                class="icon fa-solid fa-thumbtack me-3 rotate"
-                @click="noteStore.markPinned(note.id)"
-              ></i>
-            </div>
+        <div class="card" :class="{ 'card-highlight': note.pinned }">
+          <div class="card-header">
+            <i
+              class="icon fa-solid fa-thumbtack me-3 rotate"
+              @click="noteStore.markPinned(note.id)"
+            ></i>
+          </div>
+          <router-link :to="{ name: 'edit', params: { id: note.id } }" class="text-black">
             <div class="card-body">
-              <h5 class="card-title">{{ note.title }}</h5>
+              <h5 class="card-title text-truncate">{{ note.title }}</h5>
               <p class="card-text">
                 {{ note.content }}
               </p>
             </div>
-            <div class="card-footer text-body-secondary text-end">
-              <i
-                class="icon fa-solid fa-trash ms-2"
-                @click="showDeleteModal(note.id)"
-              ></i>
-            </div></div
-        ></router-link>
+          </router-link>
+          <div class="card-footer text-body-secondary text-end">
+            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
+          </div>
+        </div>
       </div>
       <div class="col" v-for="note in noteStore.allNotes">
-        <router-link :to="{ name: 'edit', params: { id: note.id } }">
-          <div class="card">
-            <div class="card-header">
-              <i
-                class="icon fa-solid fa-thumbtack me-3"
-                @click="noteStore.markPinned(note.id)"
-              ></i>
-            </div>
+        <div class="card">
+          <div class="card-header">
+            <i
+              class="icon fa-solid fa-thumbtack me-3"
+              @click="noteStore.markPinned(note.id)"
+            ></i>
+          </div>
+          <router-link :to="{ name: 'edit', params: { id: note.id } }" class="text-black">
             <div class="card-body">
-              <h5 class="card-title">{{ note.title }}</h5>
+              <h5 class="card-title text-truncate">{{ note.title }}</h5>
               <p class="card-text">
                 {{ note.content }}
               </p>
             </div>
-            <div class="card-footer text-body-secondary text-end">
-              <i
-                class="icon fa-solid fa-trash ms-2"
-                @click="showDeleteModal(note.id)"
-              ></i>
-            </div>
+          </router-link>
+
+          <div class="card-footer text-body-secondary text-end">
+            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
           </div>
-        </router-link>
+        </div>
       </div>
     </div>
   </main>
@@ -79,7 +77,7 @@ const confirmDelete = () => {
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">刪除資料</h5>
+          <h5 class="modal-title">Deleting Note</h5>
           <button
             type="button"
             class="btn-close"
@@ -88,14 +86,17 @@ const confirmDelete = () => {
           ></button>
         </div>
         <div class="modal-body">
-          <p>確定刪除資料？</p>
+          <p>
+            Are you sure you want to delete this note titled
+            <span class="text-danger fw-bold"> {{ findTitle }} </span>?
+          </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            關閉
+            Close
           </button>
-          <button type="button" class="btn btn-primary" @click="confirmDelete()">
-            確認
+          <button type="button" class="btn btn-danger" @click="confirmDelete()">
+            Confirm
           </button>
         </div>
       </div>

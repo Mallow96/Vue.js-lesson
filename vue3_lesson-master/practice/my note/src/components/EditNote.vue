@@ -9,9 +9,12 @@ const noteStore = useNoteStore();
 
 const noteTitle = ref("");
 const noteContent = ref("");
+const saveSuccess = ref(false);
+const isEdited = ref(false);
+let noteId;
 
 watchEffect(() => {
-  const noteId = Number(route.params.id);
+  noteId = Number(route.params.id);
   const currentNote = noteStore.notes.find((note) => note.id === noteId);
 
   if (currentNote != null) {
@@ -19,6 +22,20 @@ watchEffect(() => {
     noteContent.value = currentNote.content;
   }
 });
+
+const saveEdit = () => {
+  if (noteTitle.value && noteContent.value) {
+    isEdited.value = noteStore.editItem(noteId, noteTitle.value, noteContent.value);
+  }
+  if (isEdited) {
+    saveSuccess.value = true;
+
+    setTimeout(() => {
+      saveSuccess.value = false;
+      router.push({ path: "/" });
+    }, 1000);
+  }
+};
 
 // // 取得當前筆記
 // const noteId = Number(route.params.id);
@@ -55,13 +72,13 @@ watchEffect(() => {
 <template>
   <div class="container p-5">
     <!-- 成功提示 -->
-    <div class="alert alert-success">Note Updated!</div>
+    <div class="alert alert-success" v-show="saveSuccess">Note Updated!</div>
 
     <!-- 標題 -->
     <h2 class="mb-4">Edit Your Note</h2>
 
     <!-- 表單 -->
-    <form @submit.prevent="saveNote">
+    <form @submit.prevent="saveEdit()">
       <div class="mb-3">
         <input
           type="text"
@@ -82,7 +99,7 @@ watchEffect(() => {
         ></textarea>
       </div>
       <button type="submit" class="btn btn-outline-success">
-        Save <i class="fa-solid fa-floppy-disk"></i>
+        Save and Exit <i class="fa-solid fa-floppy-disk"></i>
       </button>
     </form>
   </div>

@@ -5,6 +5,7 @@ import { ref, onMounted } from "vue";
 const noteStore = useNoteStore();
 let selectedNoteId = ref(0);
 let deleteModal = null;
+const findTitle = ref("");
 
 onMounted(() => {
   deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
@@ -13,6 +14,7 @@ onMounted(() => {
 const showDeleteModal = (noteId) => {
   selectedNoteId.value = noteId;
   deleteModal.show();
+  findTitle.value = noteStore.findItemTitle(noteId);
 };
 
 const confirmDelete = () => {
@@ -27,7 +29,7 @@ const confirmDelete = () => {
       <div class="row">
         <div class="col-12 my-3 text-center">
           <router-link :to="{ path: '/add' }">
-            <button type="button" class="add-button btn btn-info w-75">Add</button>
+            <button type="button" class="add-button btn btn-success w-75">Add</button>
           </router-link>
         </div>
         <div class="pinned col-12 my-3">
@@ -99,7 +101,7 @@ const confirmDelete = () => {
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">刪除資料</h5>
+          <h5 class="modal-title">Deleting Note</h5>
           <button
             type="button"
             class="btn-close"
@@ -108,14 +110,17 @@ const confirmDelete = () => {
           ></button>
         </div>
         <div class="modal-body">
-          <p>確定刪除資料？</p>
+          <p>
+            Are you sure you want to delete this note titled
+            <span class="text-danger fw-bold"> {{ findTitle }} </span>?
+          </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            關閉
+            Close
           </button>
-          <button type="button" class="btn btn-primary" @click="confirmDelete()">
-            確認
+          <button type="button" class="btn btn-danger" @click="confirmDelete()">
+            Confirm
           </button>
         </div>
       </div>
@@ -127,7 +132,8 @@ const confirmDelete = () => {
 .add-button {
   color: white;
   &:hover {
-    color: darkslategray;
+    background-color: goldenrod;
+    border-color: goldenrod;
   }
 }
 
