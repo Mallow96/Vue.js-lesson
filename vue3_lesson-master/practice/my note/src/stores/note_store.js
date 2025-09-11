@@ -72,7 +72,18 @@ export const useNoteStore = defineStore('notes', () => {
         notes.splice(index, 1);
     }
 
-    return { notes, allNotes, pinnedNotes, markPinned, deleteItem };
+    const addItem = (newTitle, newContent) => {
+        if (newTitle == null) return;
+        const latestId = notes.length + 1;
+        notes.push({
+            id: latestId,
+            title: newTitle,
+            content: newContent,
+            pinned: false
+        })
+    }
+
+    return { notes, allNotes, pinnedNotes, markPinned, deleteItem, addItem };
 })
 
 // option語法

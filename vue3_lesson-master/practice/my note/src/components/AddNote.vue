@@ -11,7 +11,7 @@ const newNoteTitle = ref("");
 const newNoteContent = ref("筆記內容...");
 const noteStore = useNoteStore();
 const { notes } = storeToRefs(noteStore);
-const { addNote } = noteStore;
+const { addItem } = noteStore;
 const showSuccessAlert = ref(false);
 //清空標題的input placeholder
 function clearPlaceholder() {
@@ -23,7 +23,7 @@ function clearTextArea() {
 }
 function createNote() {
   if (newNoteTitle.value) {
-    addNote(newNoteTitle.value, newNoteContent.value);
+    addItem(newNoteTitle.value, newNoteContent.value);
     // 顯示更新成功消息
     showSuccessAlert.value = true;
 

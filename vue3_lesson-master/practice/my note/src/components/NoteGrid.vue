@@ -1,9 +1,26 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useNoteStore } from "../stores/note_store";
 import { storeToRefs } from "pinia";
 
 const noteStore = useNoteStore();
+let selectedNoteId = ref(0);
+let deleteModal = null;
+
+//和sidebar用不一樣的ID，不然會呼叫那邊的modal
+onMounted(() => {
+  deleteModal = new bootstrap.Modal(document.getElementById("gridDeleteModal"));
+});
+
+const showDeleteModal = (noteId) => {
+  selectedNoteId.value = noteId;
+  deleteModal.show();
+};
+
+const confirmDelete = () => {
+  noteStore.deleteItem(selectedNoteId.value);
+  deleteModal.hide();
+};
 </script>
 <template>
   <main id="result" class="container mt-4">
@@ -23,10 +40,7 @@ const noteStore = useNoteStore();
             </p>
           </div>
           <div class="card-footer text-body-secondary text-end">
-            <i
-              class="icon fa-solid fa-trash ms-2"
-              @click="noteStore.deleteItem(note.id)"
-            ></i>
+            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
           </div>
         </div>
       </div>
@@ -45,15 +59,39 @@ const noteStore = useNoteStore();
             </p>
           </div>
           <div class="card-footer text-body-secondary text-end">
-            <i
-              class="icon fa-solid fa-trash ms-2"
-              @click="noteStore.deleteItem(note.id)"
-            ></i>
+            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
           </div>
         </div>
       </div>
     </div>
   </main>
+
+  <div class="modal" tabindex="-1" id="gridDeleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">刪除資料</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>確定刪除資料？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            關閉
+          </button>
+          <button type="button" class="btn btn-primary" @click="confirmDelete()">
+            確認
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -80,7 +118,7 @@ const noteStore = useNoteStore();
 }
 
 .icon:hover {
-  color: gray;
+  color: goldenrod;
   cursor: pointer;
 }
 </style>

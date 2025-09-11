@@ -1,6 +1,24 @@
 <script setup>
 import { useNoteStore } from "../stores/note_store";
+import { ref, onMounted } from "vue";
+
 const noteStore = useNoteStore();
+let selectedNoteId = ref(0);
+let deleteModal = null;
+
+onMounted(() => {
+  deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+});
+
+const showDeleteModal = (noteId) => {
+  selectedNoteId.value = noteId;
+  deleteModal.show();
+};
+
+const confirmDelete = () => {
+  noteStore.deleteItem(selectedNoteId.value);
+  deleteModal.hide();
+};
 </script>
 
 <template>
@@ -27,13 +45,13 @@ const noteStore = useNoteStore();
                 <span>{{ note.title }}</span>
               </span>
               <span class="item-right">
-                <router-link :to="{ path: '/edit/:id' }">
+                <router-link :to="{ path: '/edit/:id' }" class="text-black">
                   <i class="icon fa-solid fa-pen-to-square"></i>
                 </router-link>
 
                 <i
                   class="icon fa-solid fa-trash ms-2"
-                  @click="noteStore.deleteItem(note.id)"
+                  @click="showDeleteModal(note.id)"
                 ></i>
               </span>
             </li>
@@ -55,13 +73,13 @@ const noteStore = useNoteStore();
                 <span>{{ note.title }}</span>
               </span>
               <span class="item-right">
-                <router-link :to="{ path: '/edit/:id' }">
+                <router-link :to="{ path: '/edit/:id' }" class="text-black">
                   <i class="icon fa-solid fa-pen-to-square"></i>
                 </router-link>
 
                 <i
                   class="icon fa-solid fa-trash ms-2"
-                  @click="noteStore.deleteItem(note.id)"
+                  @click="showDeleteModal(note.id)"
                 ></i>
               </span>
             </li>
@@ -90,7 +108,9 @@ const noteStore = useNoteStore();
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             關閉
           </button>
-          <button type="button" class="btn btn-primary">確認</button>
+          <button type="button" class="btn btn-primary" @click="confirmDelete()">
+            確認
+          </button>
         </div>
       </div>
     </div>
@@ -119,7 +139,7 @@ const noteStore = useNoteStore();
 }
 
 .icon:hover {
-  color: gray;
+  color: goldenrod;
   cursor: pointer;
 }
 </style>
