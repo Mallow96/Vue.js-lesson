@@ -1,52 +1,64 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useNoteStore } from "../stores/note_store";
 import { useRouter, useRoute } from "vue-router";
 
-// 路由和筆記儲存
 const route = useRoute();
 const router = useRouter();
 const noteStore = useNoteStore();
 
-// 取得當前筆記
-const noteId = Number(route.params.id);
-const currentNote = noteStore.notes.find((note) => note.id === noteId);
+const noteTitle = ref("");
+const noteContent = ref("");
 
-// 標題和內容
-const noteTitle = ref(currentNote ? currentNote.title : "");
-const noteContent = ref(currentNote ? currentNote.content : "");
-const showSuccess = ref(false);
+watchEffect(() => {
+  const noteId = Number(route.params.id);
+  const currentNote = noteStore.notes.find((note) => note.id === noteId);
 
-// 清空標題預設文字
-function clearTitlePlaceholder() {
-  document.getElementById("title").placeholder = "";
-}
-
-// 清空內容
-function clearContent() {
-  noteContent.value = "";
-}
-
-// 更新筆記
-function saveNote() {
-  if (currentNote) {
-    noteStore.editNote(currentNote.id, noteTitle.value, noteContent.value);
-    showSuccess.value = true;
-    setTimeout(() => {
-      showSuccess.value = false;
-      router.push({ path: "/" });
-    }, 1000);
+  if (currentNote != null) {
+    noteTitle.value = currentNote.title;
+    noteContent.value = currentNote.content;
   }
-}
+});
+
+// // 取得當前筆記
+// const noteId = Number(route.params.id);
+// const currentNote = noteStore.notes.find((note) => note.id === noteId);
+
+// // 標題和內容
+// const noteTitle = ref(currentNote ? currentNote.title : "");
+// const noteContent = ref(currentNote ? currentNote.content : "");
+// const showSuccess = ref(false);
+
+// // 清空標題預設文字
+// function clearTitlePlaceholder() {
+//   document.getElementById("title").placeholder = "";
+// }
+
+// // 清空內容
+// function clearContent() {
+//   noteContent.value = "";
+// }
+
+// // 更新筆記
+// function saveNote() {
+//   if (currentNote) {
+//     noteStore.editNote(currentNote.id, noteTitle.value, noteContent.value);
+//     showSuccess.value = true;
+//     setTimeout(() => {
+//       showSuccess.value = false;
+//       router.push({ path: "/" });
+//     }, 1000);
+//   }
+// }
 </script>
 
 <template>
   <div class="container p-5">
     <!-- 成功提示 -->
-    <div v-if="showSuccess" class="alert alert-success">筆記已更新！</div>
+    <div class="alert alert-success">Note Updated!</div>
 
     <!-- 標題 -->
-    <h2 class="mb-4">編輯筆記</h2>
+    <h2 class="mb-4">Edit Your Note</h2>
 
     <!-- 表單 -->
     <form @submit.prevent="saveNote">
@@ -70,7 +82,7 @@ function saveNote() {
         ></textarea>
       </div>
       <button type="submit" class="btn btn-outline-success">
-        保存 <i class="fa-solid fa-floppy-disk"></i>
+        Save <i class="fa-solid fa-floppy-disk"></i>
       </button>
     </form>
   </div>
@@ -83,11 +95,11 @@ function saveNote() {
 .alert-success {
   transition: opacity 0.3s ease;
 }
-.btn-outline-success {
+/* .btn-outline-success {
   position: absolute;
   bottom: 10px;
   right: 10px;
-}
+} */
 form {
   position: relative;
 }

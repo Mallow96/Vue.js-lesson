@@ -26,42 +26,51 @@ const confirmDelete = () => {
   <main id="result" class="container mt-4">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col" v-for="note in noteStore.pinnedNotes">
-        <div class="card">
-          <div class="card-header">
-            <i
-              class="icon fa-solid fa-thumbtack me-3 rotate"
-              @click="noteStore.markPinned(note.id)"
-            ></i>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ note.title }}</h5>
-            <p class="card-text">
-              {{ note.content }}
-            </p>
-          </div>
-          <div class="card-footer text-body-secondary text-end">
-            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
-          </div>
-        </div>
+        <router-link :to="{ name: 'edit', params: { id: note.id } }">
+          <div class="card" :class="{ 'card-highlight': note.pinned }">
+            <div class="card-header">
+              <i
+                class="icon fa-solid fa-thumbtack me-3 rotate"
+                @click="noteStore.markPinned(note.id)"
+              ></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ note.title }}</h5>
+              <p class="card-text">
+                {{ note.content }}
+              </p>
+            </div>
+            <div class="card-footer text-body-secondary text-end">
+              <i
+                class="icon fa-solid fa-trash ms-2"
+                @click="showDeleteModal(note.id)"
+              ></i>
+            </div></div
+        ></router-link>
       </div>
       <div class="col" v-for="note in noteStore.allNotes">
-        <div class="card">
-          <div class="card-header">
-            <i
-              class="icon fa-solid fa-thumbtack me-3"
-              @click="noteStore.markPinned(note.id)"
-            ></i>
+        <router-link :to="{ name: 'edit', params: { id: note.id } }">
+          <div class="card">
+            <div class="card-header">
+              <i
+                class="icon fa-solid fa-thumbtack me-3"
+                @click="noteStore.markPinned(note.id)"
+              ></i>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ note.title }}</h5>
+              <p class="card-text">
+                {{ note.content }}
+              </p>
+            </div>
+            <div class="card-footer text-body-secondary text-end">
+              <i
+                class="icon fa-solid fa-trash ms-2"
+                @click="showDeleteModal(note.id)"
+              ></i>
+            </div>
           </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ note.title }}</h5>
-            <p class="card-text">
-              {{ note.content }}
-            </p>
-          </div>
-          <div class="card-footer text-body-secondary text-end">
-            <i class="icon fa-solid fa-trash ms-2" @click="showDeleteModal(note.id)"></i>
-          </div>
-        </div>
+        </router-link>
       </div>
     </div>
   </main>
@@ -115,6 +124,10 @@ const confirmDelete = () => {
   left: 10px;
   color: red;
   transform: rotate(45deg);
+}
+
+.card-highlight {
+  border: 2px solid lightpink;
 }
 
 .icon:hover {

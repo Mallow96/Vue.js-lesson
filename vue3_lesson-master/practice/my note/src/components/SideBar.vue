@@ -45,7 +45,10 @@ const confirmDelete = () => {
                 <span>{{ note.title }}</span>
               </span>
               <span class="item-right">
-                <router-link :to="{ path: '/edit/:id' }" class="text-black">
+                <router-link
+                  :to="{ name: 'edit', params: { id: note.id } }"
+                  class="text-black"
+                >
                   <i class="icon fa-solid fa-pen-to-square"></i>
                 </router-link>
 
@@ -73,7 +76,10 @@ const confirmDelete = () => {
                 <span>{{ note.title }}</span>
               </span>
               <span class="item-right">
-                <router-link :to="{ path: '/edit/:id' }" class="text-black">
+                <router-link
+                  :to="{ name: 'edit', params: { id: note.id } }"
+                  class="text-black"
+                >
                   <i class="icon fa-solid fa-pen-to-square"></i>
                 </router-link>
 

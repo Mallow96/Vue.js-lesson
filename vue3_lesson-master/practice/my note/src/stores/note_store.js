@@ -13,38 +13,38 @@ export const useNoteStore = defineStore('notes', () => {
     const notes = reactive([
         {
             id: 1,
-            title: '完成作業',
-            content: "完成歷史作業第11章",
+            title: 'Homework',
+            content: "Complete Chapter 11 of the history homework.",
             pinned: true
         },
         {
             id: 2,
-            title: '學習計畫',
-            content: "每天晚上花一小時學習新技術，提升自己的能力。",
+            title: 'Study Plan',
+            content: "Spend one hour every night learning new technologies to improve skills.",
             pinned: false
         },
         {
             id: 3,
-            title: '運動',
-            content: "每週三慢跑30分鐘，保持健康。",
+            title: 'Exercise',
+            content: "Jog for 30 minutes every Wednesday to stay healthy.",
             pinned: false
         },
         {
             id: 4,
-            title: '閱讀書籍',
-            content: "本月閱讀完《深度工作》一書。",
+            title: 'Read Books',
+            content: "Finish reading 'Deep Work' this month.",
             pinned: false
         },
         {
             id: 5,
-            title: '購物清單',
-            content: "牛奶、麵包、雞蛋、蔬菜。",
+            title: 'Shopping List',
+            content: "Milk, bread, eggs, vegetables.",
             pinned: false
         },
         {
             id: 6,
-            title: '聯絡朋友',
-            content: "週末約小明一起吃飯聊天。",
+            title: 'Contact Friends',
+            content: "Ask Xiao Ming out for dinner and a chat this weekend.",
             pinned: true
         },
     ])
@@ -64,7 +64,6 @@ export const useNoteStore = defineStore('notes', () => {
     const markPinned = (id) => {
         const note = notes.find(note => note.id === id);
         note.pinned = !note.pinned;
-        console.log(note);
     }
 
     const deleteItem = (id) => {
@@ -73,17 +72,31 @@ export const useNoteStore = defineStore('notes', () => {
     }
 
     const addItem = (newTitle, newContent) => {
-        if (newTitle == null) return;
-        const latestId = notes.length + 1;
-        notes.push({
-            id: latestId,
-            title: newTitle,
-            content: newContent,
-            pinned: false
-        })
+        if (newTitle == null) return false
+        else {
+            const latestId = notes.length + 1;
+            notes.push({
+                id: latestId,
+                title: newTitle,
+                content: newContent,
+                pinned: false
+            })
+            return true;
+        }
     }
 
-    return { notes, allNotes, pinnedNotes, markPinned, deleteItem, addItem };
+    const editItem = (id, newTitle, newContent) => {
+        const note = notes.find(note => note.id === id);
+        if (note !== -1) {
+            note.title = newTitle;
+            note.content = newContent;
+            return true
+        } else {
+            return false;
+        }
+    }
+
+    return { notes, allNotes, pinnedNotes, markPinned, deleteItem, addItem, editItem };
 })
 
 // option語法
