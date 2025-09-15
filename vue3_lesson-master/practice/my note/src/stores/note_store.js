@@ -3,7 +3,7 @@
 // computed() 就是 getters
 // function() 就是 actions
 import { defineStore } from 'pinia';
-import { ref, computed, reactive, watch } from "vue";
+import { ref, computed, reactive, watch, onMounted  } from "vue";
 import { useRouter,useRoute } from 'vue-router';
 
 //setup 語法
@@ -119,7 +119,39 @@ export const useNoteStore = defineStore('notes', () => {
         );
     }
 
-    return { notes, allNotes, pinnedNotes, searchResults, markPinned, deleteItem, addItem, editItem, findItemTitle, searchNotes };
+    const saveLocalStorage = () => {
+        localStorage.setItem('notes', JSON.stringify(notes));
+    }
+
+    const loadLocalStorage = () => {
+        const data = localStorage.getItem('notes');
+        if (data) {
+            const parsed = JSON.parse(data);
+            notes.splice(0, notes.length, ...parsed);
+        } else {
+            console.log('No data in localStorage');
+        }}
+
+    watch(notes, () => {
+        saveLocalStorage();
+    }, { deep: true });
+
+    onMounted(() => {
+        loadLocalStorage();
+    })
+
+    return { 
+            notes, 
+            allNotes, 
+            pinnedNotes, 
+            searchResults, 
+            markPinned, 
+            deleteItem, 
+            addItem, 
+            editItem, 
+            findItemTitle, 
+            searchNotes, 
+         };
 })
 
 // option語法
