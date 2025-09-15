@@ -3,12 +3,16 @@
 // computed() 就是 getters
 // function() 就是 actions
 import { defineStore } from 'pinia';
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, watch } from "vue";
+import { useRouter,useRoute } from 'vue-router';
 
 //setup 語法
 export const useNoteStore = defineStore('notes', () => {
     // ref() 就是 state 属性
     // const noteStore = useNoteStore();
+
+    const router = useRouter();
+    const route = useRoute();
 
     const notes = reactive([
         {
@@ -113,7 +117,6 @@ export const useNoteStore = defineStore('notes', () => {
             note.title.toLowerCase().includes(kw) ||
             note.content.toLowerCase().includes(kw)
         );
-        console.log(searchResults.value);
     }
 
     return { notes, allNotes, pinnedNotes, searchResults, markPinned, deleteItem, addItem, editItem, findItemTitle, searchNotes };

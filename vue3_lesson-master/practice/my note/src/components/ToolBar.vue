@@ -1,17 +1,33 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useNoteStore } from "../stores/note_store";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
 
 const noteStore = useNoteStore();
 const router = useRouter();
+const route = useRoute()
 
-const keyword = ref("");
+const keyword = ref(route.query.keyword || "");   
+
 const showSearch = () => {
-  noteStore.searchNotes(keyword.value);
-  keyword.value = "";
-  router.push({ name: "search" });
+  router.push({ name: "search", query: { keyword: keyword.value } });
 };
+
+watch(
+  () => route.query.keyword,
+  (newKeyword) => {
+    if(newKeyword){
+      noteStore.searchNotes(newKeyword);
+      keyword.value = newKeyword;
+    } 
+    else {
+      keyword.value = "";
+      noteStore.searchResults = [];
+      router.push({ name: "grid" });
+  }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -29,6 +45,7 @@ const showSearch = () => {
           placeholder="Search"
           aria-label="Search"
           v-model="keyword"
+           @input="showSearch()"
         />
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
