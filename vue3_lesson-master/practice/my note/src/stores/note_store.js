@@ -105,13 +105,15 @@ export const useNoteStore = defineStore('notes', () => {
         }
     }
 
-    let searchResults = [];
+    const searchResults = ref([]);
     const searchNotes = (keyword) => {
-        searchResults = notes.filter(note =>
-            note.title.toLowerCase().includes(keyword) ||
-            note.content.toLowerCase().includes(keyword)
+        const kw = keyword.toLowerCase();
+
+        searchResults.value = notes.filter(note =>
+            note.title.toLowerCase().includes(kw) ||
+            note.content.toLowerCase().includes(kw)
         );
-        console.log(searchResults);
+        console.log(searchResults.value);
     }
 
     return { notes, allNotes, pinnedNotes, searchResults, markPinned, deleteItem, addItem, editItem, findItemTitle, searchNotes };

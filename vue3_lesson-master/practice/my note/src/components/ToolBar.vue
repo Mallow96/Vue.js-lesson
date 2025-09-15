@@ -8,9 +8,8 @@ const router = useRouter();
 
 const keyword = ref("");
 const showSearch = () => {
-  const result = noteStore.searchNotes(keyword.value);
-  console.log(result);
-
+  noteStore.searchNotes(keyword.value);
+  keyword.value = "";
   router.push({ name: "search" });
 };
 </script>
